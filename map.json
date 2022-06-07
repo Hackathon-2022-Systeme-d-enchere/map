@@ -632,7 +632,7 @@
         {
          "columns":76,
          "firstgid":2683,
-         "image":"..\/..\/..\/Downloads\/Modern_Interiors\/1_Interiors\/32x32\/Room_Builder_32x32.png",
+         "image":"assets\/Room_Builder_32x32.png",
          "imageheight":3488,
          "imagewidth":2432,
          "margin":0,
@@ -645,7 +645,7 @@
         {
          "columns":16,
          "firstgid":10967,
-         "image":"..\/..\/..\/Downloads\/Modern_Interiors\/1_Interiors\/32x32\/Theme_Sorter_32x32\/13_Conference_Hall_32x32.png",
+         "image":"assets\/13_Conference_Hall_32x32.png",
          "imageheight":384,
          "imagewidth":512,
          "margin":0,
@@ -658,7 +658,7 @@
         {
          "columns":16,
          "firstgid":11159,
-         "image":"..\/..\/..\/Downloads\/Modern_Interiors\/1_Interiors\/32x32\/Theme_Sorter_32x32\/1_Generic_32x32.png",
+         "image":"assets\/1_Generic_32x32.png",
          "imageheight":2496,
          "imagewidth":512,
          "margin":0,
@@ -671,7 +671,7 @@
         {
          "columns":16,
          "firstgid":12407,
-         "image":"..\/..\/..\/Downloads\/Modern_Interiors\/1_Interiors\/32x32\/Theme_Sorter_32x32\/7_Art_32x32.png",
+         "image":"assets\/7_Art_32x32.png",
          "imageheight":224,
          "imagewidth":512,
          "margin":0,
@@ -684,7 +684,7 @@
         {
          "columns":16,
          "firstgid":12519,
-         "image":"..\/..\/..\/Downloads\/Modern_Interiors\/1_Interiors\/32x32\/Theme_Sorter_32x32\/22_Museum_32x32.png",
+         "image":"assets\/22_Museum_32x32.png",
          "imageheight":3904,
          "imagewidth":512,
          "margin":0,
