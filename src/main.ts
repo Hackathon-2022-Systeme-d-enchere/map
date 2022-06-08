@@ -8,20 +8,22 @@ WA.onInit()
     console.log("Scripting API ready");
     console.log("Player tags: ", WA.player.tags);
     // Attribution du rôle par défaut
-    WA.player.state.role = "buyer";
+    WA.player.state.roleBuyer = "buyer";
     console.log(WA.player.state.role);
 
+    // BeSellerZone
     WA.room.onEnterLayer("beSellerZone").subscribe(() => {
       console.log("seller zone");
-      if (!(WA.player.state.role == "seller")) {
-        if (!(WA.player.state.role == "seller") === null || undefined) {
+      if (!(WA.player.state.roleSeller == "seller")) {
+        if ((WA.player.state.role == "seller") === null || undefined) {
           console.log("There is already a seller, you cant enter");
           WA.player.moveTo(250, 250, 10);
         } else {
           const triggerMessage = WA.ui.displayActionMessage({
             message: "Wanna be a seller ? press 'space' to confirm",
             callback: () => {
-              WA.player.state.role = "seller";
+              WA.player.state.roleSeller = "seller";
+              console.log(WA.player.state.role);
               WA.chat.sendChatMessage("confirmed", "You're a seller now");
             },
           });
@@ -35,7 +37,8 @@ WA.onInit()
       console.log("leaving seller zone");
     });
 
-    WA.room.onEnterLayer("buyingZone").subscribe(() => {
+    // BuyingZone
+    WA.room.onEnterLayer("buyingZone").subscribe(async () => {
       console.log("buying zone");
       const triggerMessage = WA.ui.displayActionMessage({
         message: "press 'space' to confirm",
@@ -47,6 +50,20 @@ WA.onInit()
         // later
         triggerMessage.remove();
       }, 10000);
+      // Object Sell Appear
+      const objectSell = await WA.ui.website.open({
+        url: "https://wikipedia.org/",
+        position: {
+          vertical: "bottom",
+          horizontal: "middle",
+        },
+        size: {
+          height: "300px",
+          width: "200px",
+        },
+      });
+
+      objectSell.position.vertical = "top";
     });
     WA.room.onLeaveLayer("buyingZone").subscribe(() => {
       console.log("leaving buying zone");
