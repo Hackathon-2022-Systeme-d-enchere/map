@@ -465,6 +465,35 @@
          "y":0
         }, 
         {
+         "draworder":"topdown",
+         "id":58,
+         "name":"configGlobal",
+         "objects":[
+                {
+                 "height":0,
+                 "id":17,
+                 "name":"alreadyGiveRoleSeller",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"alreadyGiveRoleSeller",
+                         "type":"bool",
+                         "value":false
+                        }],
+                 "rotation":0,
+                 "type":"variable",
+                 "visible":true,
+                 "width":0,
+                 "x":270.060229259763,
+                 "y":913.153293180493
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10970, 0, 10970, 0, 0, 10970, 0, 10970, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10974, 1180, 0, 0, 0, 0, 10974, 1178, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -507,8 +536,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":58,
- "nextobjectid":17,
+ "nextlayerid":59,
+ "nextobjectid":18,
  "orientation":"orthogonal",
  "properties":[
         {
