@@ -29,13 +29,9 @@ WA.onInit()
         const triggerMessage = WA.ui.displayActionMessage({
           message: "Wanna be a seller ? press 'space' to confirm",
           callback: () => {
-            WA.state.config = {
-              alreadyGiveRoleSeller: true,
-            };
             WA.state.saveVariable("alreadyGiveRoleSeller", true);
-            //WA.player.state.role = "seller";
+            WA.player.state.role = "seller";
             console.log(WA.player.state.role);
-            //console.log("alreadyGiveRoleSeller", config);
             WA.chat.sendChatMessage("confirmed", "You're a seller now");
           },
         });
