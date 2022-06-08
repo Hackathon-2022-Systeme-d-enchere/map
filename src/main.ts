@@ -55,7 +55,7 @@ WA.onInit()
         url: "https://wikipedia.org/",
         position: {
           vertical: "bottom",
-          horizontal: "middle",
+          horizontal: "left",
         },
         size: {
           height: "300px",
