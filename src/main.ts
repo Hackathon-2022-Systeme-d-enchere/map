@@ -1,7 +1,9 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-console.log("Script started successfully");
+import { UIWebsite } from "@workadventure/iframe-api-typings/Api/iframe/Ui/UIWebsite";
 
+console.log("Script started successfully");
+let objectSell: UIWebsite;
 // Waiting for the API to be ready
 WA.onInit()
   .then(() => {
@@ -68,7 +70,7 @@ WA.onInit()
         triggerMessage.remove();
       }, 6000);
       // Object Sell Appear
-      const objectSell = await WA.ui.website.open({
+      objectSell = await WA.ui.website.open({
         url: "https://wikipedia.org/",
         position: {
           vertical: "bottom",
@@ -84,6 +86,7 @@ WA.onInit()
     });
     WA.room.onLeaveLayer("buyingZone").subscribe(() => {
       console.log("leaving buying zone");
+      objectSell.close();
     });
   })
   .catch((e) => console.error(e));
