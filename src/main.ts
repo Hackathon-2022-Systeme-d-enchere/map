@@ -43,15 +43,10 @@ WA.onInit()
       if (WA.state.loadVariable("someoneInEnchereRoom") === true) {
         if (
           WA.state.loadVariable("isABuyer") === false &&
-          (WA.player.state.role = "buyer")
+          WA.player.state.role === "buyer"
         ) {
           console.log("There is already a seller, you cant enter");
           WA.player.moveTo(250, 250, 10);
-        } else if (
-          WA.state.loadVariable("isABuyer") === false &&
-          (WA.player.state.role = "seller")
-        ) {
-          console.log("yoo");
         } else {
           const triggerMessage = WA.ui.displayActionMessage({
             message: "Wanna be a seller ? press 'space' to confirm",
@@ -73,20 +68,22 @@ WA.onInit()
       console.log("leaving seller zone");
       if (
         WA.state.loadVariable("isABuyer") === false &&
-        (WA.player.state.role = "seller")
+        WA.player.state.role === "seller" &&
+        WA.state.loadVariable("someoneInEnchereRoom") === true
       ) {
         const triggerMessage = WA.ui.displayActionMessage({
           message: "Leave you're role of seller ? press 'space' to confirm",
           callback: () => {
             WA.state.saveVariable("isABuyer", true);
             WA.player.state.role = "buyer";
-            console.log(WA.player.state.role);
             WA.chat.sendChatMessage("confirmed", "You're a not seller now");
           },
         });
         setTimeout(() => {
           triggerMessage.remove();
         }, 6000);
+      } else {
+        console.log("not permitted");
       }
     });
 
@@ -94,7 +91,7 @@ WA.onInit()
     WA.room.onEnterLayer("buyingZone").subscribe(async () => {
       console.log("buying zone");
       const triggerMessage = WA.ui.displayActionMessage({
-        message: "press 'space' to confirm",
+        message: "Wanna be a buyer ?press 'space' to confirm",
         callback: () => {
           WA.chat.sendChatMessage("confirmed", "trigger message logic");
         },
