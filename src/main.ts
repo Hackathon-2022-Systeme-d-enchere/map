@@ -12,64 +12,71 @@ WA.onInit()
     // Attribution du rôle par défaut
     WA.player.state.role = "buyer";
     console.log(WA.player.state.role);
-    // Variable globale pour check si role Seller est déjà attribué
-    // WA.state.saveVariable("alreadyGiveRoleSeller", false);
+
+    WA.state.onVariableChange("isABuyer").subscribe((isABuyer) => {
+      console.log('Variable "isABuyer" changed. New value: ', isABuyer);
+    });
 
     WA.state
-      .onVariableChange("alreadyGiveRoleSeller")
-      .subscribe((alreadyGiveRoleSeller) => {
+      .onVariableChange("someoneInEnchereRoom")
+      .subscribe((someoneInEnchereRoom) => {
         console.log(
-          'Variable "config" changed. New value: ',
-          alreadyGiveRoleSeller
+          'Variable "someoneInEnchereRoom" changed. New value: ',
+          someoneInEnchereRoom
         );
       });
 
     // EnchereZone
     WA.room.onEnterLayer("enchereZone").subscribe(() => {
       console.log("enchereZone zone");
+      WA.player.state.role = "buyer";
       WA.state.saveVariable("someoneInEnchereRoom", true);
+      console.log("Enchere Zone, Vous etes : ", WA.player.state.role);
     });
     WA.room.onLeaveLayer("enchereZone").subscribe(() => {
       console.log("leaving enchereZone");
       WA.state.saveVariable("someoneInEnchereRoom", false);
-      WA.state.saveVariable("alreadyGiveRoleSeller", true);
     });
 
     // BeSellerZone
     WA.room.onEnterLayer("beSellerZone").subscribe(() => {
       console.log("seller zone");
-
-      if (WA.state.loadVariable("someoneInEnchereRoom") === true) {
-        if (WA.state.loadVariable("alreadyGiveRoleSeller") === false) {
-          console.log("There is already a seller, you cant enter");
-          WA.player.moveTo(250, 250, 10);
-        }
-        const triggerMessage = WA.ui.displayActionMessage({
-          message: "Wanna be a seller ? press 'space' to confirm",
-          callback: () => {
-            WA.state.saveVariable("alreadyGiveRoleSeller", false);
-            WA.player.state.role = "seller";
-            console.log(WA.player.state.role);
-            WA.chat.sendChatMessage("confirmed", "You're a seller now");
-          },
-        });
-        setTimeout(() => {
-          triggerMessage.remove();
-        }, 6000);
-      } else if (
-        WA.state.loadVariable("alreadyGiveRoleSeller") === false &&
+      if (
+        WA.state.loadVariable("someoneInEnchereRoom") === true &&
         (WA.player.state.role = "buyer")
       ) {
-        console.log("There is already a seller, you cant enter");
-        console.log(
-          "alreadyGiveRoleSeller",
-          WA.state.loadVariable("alreadyGiveRoleSeller")
-        );
-        WA.player.moveTo(250, 250, 10);
+        if (
+          WA.state.loadVariable("isABuyer") === false &&
+          (WA.player.state.role = "buyer")
+        ) {
+          console.log("There is already a seller, you cant enter");
+          WA.player.moveTo(250, 250, 10);
+        } else if (
+          WA.state.loadVariable("isABuyer") === false &&
+          (WA.player.state.role = "seller")
+        ) {
+          console.log("yoo");
+        } else {
+          const triggerMessage = WA.ui.displayActionMessage({
+            message: "Wanna be a seller ? press 'space' to confirm",
+            callback: () => {
+              WA.state.saveVariable("isABuyer", false);
+              WA.player.state.role = "seller";
+              console.log(WA.player.state.role);
+              WA.chat.sendChatMessage("confirmed", "You're a seller now");
+            },
+          });
+          setTimeout(() => {
+            triggerMessage.remove();
+          }, 6000);
+        }
+      } else {
       }
     });
     WA.room.onLeaveLayer("beSellerZone").subscribe(() => {
       console.log("leaving seller zone");
+      WA.state.saveVariable("isABuyer", true);
+      WA.player.state.role = "buyer";
     });
 
     // BuyingZone
@@ -105,6 +112,7 @@ WA.onInit()
       objectSell.close();
     });
   })
+
   .catch((e) => console.error(e));
 
 export {};
