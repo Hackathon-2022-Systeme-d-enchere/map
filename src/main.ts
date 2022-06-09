@@ -1,9 +1,11 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
+import { CoWebsite } from "@workadventure/iframe-api-typings/Api/iframe/nav";
 import { UIWebsite } from "@workadventure/iframe-api-typings/Api/iframe/Ui/UIWebsite";
 
 console.log("Script started successfully");
 let objectSell: UIWebsite;
+let iframeRight: CoWebsite;
 // Waiting for the API to be ready
 WA.onInit()
   .then(() => {
@@ -27,7 +29,7 @@ WA.onInit()
       });
 
     // EnchereZone
-    WA.room.onEnterLayer("enchereZone").subscribe(() => {
+    WA.room.onEnterLayer("enchereZone").subscribe(async () => {
       console.log("enchereZone zone");
       WA.player.state.role = "buyer";
       WA.state.saveVariable("someoneInEnchereRoom", true);
@@ -90,6 +92,7 @@ WA.onInit()
     // BuyingZone
     WA.room.onEnterLayer("buyingZone").subscribe(async () => {
       console.log("buying zone");
+      iframeRight = await WA.nav.openCoWebSite("https://www.wikipedia.org/");
       const triggerMessage = WA.ui.displayActionMessage({
         message: "Wanna be a buyer ?press 'space' to confirm",
         callback: () => {
@@ -118,6 +121,7 @@ WA.onInit()
     WA.room.onLeaveLayer("buyingZone").subscribe(() => {
       console.log("leaving buying zone");
       objectSell.close();
+      iframeRight.close();
     });
   })
 
