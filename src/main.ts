@@ -13,14 +13,9 @@ WA.onInit()
     WA.player.state.role = "buyer";
     console.log(WA.player.state.role);
 
-    WA.state
-      .onVariableChange("alreadyGiveRoleSeller")
-      .subscribe((alreadyGiveRoleSeller) => {
-        console.log(
-          'Variable "alreadyGiveRoleSeller" changed. New value: ',
-          alreadyGiveRoleSeller
-        );
-      });
+    WA.state.onVariableChange("isABuyer").subscribe((isABuyer) => {
+      console.log('Variable "isABuyer" changed. New value: ', isABuyer);
+    });
 
     WA.state
       .onVariableChange("someoneInEnchereRoom")
@@ -46,25 +41,26 @@ WA.onInit()
     // BeSellerZone
     WA.room.onEnterLayer("beSellerZone").subscribe(() => {
       console.log("seller zone");
-
       if (
         WA.state.loadVariable("someoneInEnchereRoom") === true &&
         (WA.player.state.role = "buyer")
       ) {
         if (
-          WA.state.loadVariable("alreadyGiveRoleSeller") === false &&
+          WA.state.loadVariable("isABuyer") === false &&
           (WA.player.state.role = "buyer")
         ) {
           console.log("There is already a seller, you cant enter");
           WA.player.moveTo(250, 250, 10);
         } else if (
-          WA.state.loadVariable("alreadyGiveRoleSeller") === true &&
-          (WA.player.state.role = "buyer")
+          WA.state.loadVariable("isABuyer") === false &&
+          (WA.player.state.role = "seller")
         ) {
+          console.log("yoo");
+        } else {
           const triggerMessage = WA.ui.displayActionMessage({
             message: "Wanna be a seller ? press 'space' to confirm",
             callback: () => {
-              WA.state.saveVariable("alreadyGiveRoleSeller", false);
+              WA.state.saveVariable("isABuyer", false);
               WA.player.state.role = "seller";
               console.log(WA.player.state.role);
               WA.chat.sendChatMessage("confirmed", "You're a seller now");
@@ -73,19 +69,14 @@ WA.onInit()
           setTimeout(() => {
             triggerMessage.remove();
           }, 6000);
-        } else if (
-          WA.state.loadVariable("alreadyGiveRoleSeller") === false &&
-          (WA.player.state.role = "seller")
-        ) {
-          console.log("yoo");
-        } else {
-          console.log("fefe");
         }
       } else {
       }
     });
     WA.room.onLeaveLayer("beSellerZone").subscribe(() => {
       console.log("leaving seller zone");
+      WA.state.saveVariable("isABuyer", true);
+      WA.player.state.role = "buyer";
     });
 
     // BuyingZone
@@ -121,6 +112,7 @@ WA.onInit()
       objectSell.close();
     });
   })
+
   .catch((e) => console.error(e));
 
 export {};

@@ -415,7 +415,7 @@
                 {
                  "height":0,
                  "id":18,
-                 "name":"alreadyGiveRoleSeller",
+                 "name":"isABuyer",
                  "point":true,
                  "properties":[
                         {
