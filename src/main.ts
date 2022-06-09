@@ -37,14 +37,10 @@ WA.onInit()
       console.log("leaving enchereZone");
       WA.state.saveVariable("someoneInEnchereRoom", false);
     });
-
     // BeSellerZone
     WA.room.onEnterLayer("beSellerZone").subscribe(() => {
       console.log("seller zone");
-      if (
-        WA.state.loadVariable("someoneInEnchereRoom") === true &&
-        (WA.player.state.role = "buyer")
-      ) {
+      if (WA.state.loadVariable("someoneInEnchereRoom") === true) {
         if (
           WA.state.loadVariable("isABuyer") === false &&
           (WA.player.state.role = "buyer")
@@ -75,8 +71,23 @@ WA.onInit()
     });
     WA.room.onLeaveLayer("beSellerZone").subscribe(() => {
       console.log("leaving seller zone");
-      WA.state.saveVariable("isABuyer", true);
-      WA.player.state.role = "buyer";
+      if (
+        WA.state.loadVariable("isABuyer") === false &&
+        (WA.player.state.role = "seller")
+      ) {
+        const triggerMessage = WA.ui.displayActionMessage({
+          message: "Leave you're role of seller ? press 'space' to confirm",
+          callback: () => {
+            WA.state.saveVariable("isABuyer", true);
+            WA.player.state.role = "buyer";
+            console.log(WA.player.state.role);
+            WA.chat.sendChatMessage("confirmed", "You're a not seller now");
+          },
+        });
+        setTimeout(() => {
+          triggerMessage.remove();
+        }, 6000);
+      }
     });
 
     // BuyingZone
@@ -91,7 +102,7 @@ WA.onInit()
       setTimeout(() => {
         // later
         triggerMessage.remove();
-      }, 6000);
+      }, 10000);
       // Object Sell Appear
       objectSell = await WA.ui.website.open({
         url: "https://wikipedia.org/",
