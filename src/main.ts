@@ -13,7 +13,7 @@ WA.onInit()
     WA.player.state.role = "buyer";
     console.log(WA.player.state.role);
     // Variable globale pour check si role Seller est déjà attribué
-    WA.state.saveVariable("alreadyGiveRoleSeller", false);
+    // WA.state.saveVariable("alreadyGiveRoleSeller", false);
 
     WA.state
       .onVariableChange("alreadyGiveRoleSeller")
@@ -23,15 +23,31 @@ WA.onInit()
           alreadyGiveRoleSeller
         );
       });
+
+    // EnchereZone
+    WA.room.onEnterLayer("enchereZone").subscribe(() => {
+      console.log("enchereZone zone");
+      WA.state.saveVariable("someoneInEnchereRoom", true);
+    });
+    WA.room.onLeaveLayer("enchereZone").subscribe(() => {
+      console.log("leaving enchereZone");
+      WA.state.saveVariable("someoneInEnchereRoom", false);
+      WA.state.saveVariable("alreadyGiveRoleSeller", true);
+    });
+
     // BeSellerZone
     WA.room.onEnterLayer("beSellerZone").subscribe(() => {
       console.log("seller zone");
 
-      if (WA.state.loadVariable("alreadyGiveRoleSeller") === false) {
+      if (WA.state.loadVariable("someoneInEnchereRoom") === true) {
+        if (WA.state.loadVariable("alreadyGiveRoleSeller") === false) {
+          console.log("There is already a seller, you cant enter");
+          WA.player.moveTo(250, 250, 10);
+        }
         const triggerMessage = WA.ui.displayActionMessage({
           message: "Wanna be a seller ? press 'space' to confirm",
           callback: () => {
-            WA.state.saveVariable("alreadyGiveRoleSeller", true);
+            WA.state.saveVariable("alreadyGiveRoleSeller", false);
             WA.player.state.role = "seller";
             console.log(WA.player.state.role);
             WA.chat.sendChatMessage("confirmed", "You're a seller now");
@@ -41,7 +57,7 @@ WA.onInit()
           triggerMessage.remove();
         }, 6000);
       } else if (
-        WA.state.loadVariable("alreadyGiveRoleSeller") === true &&
+        WA.state.loadVariable("alreadyGiveRoleSeller") === false &&
         (WA.player.state.role = "buyer")
       ) {
         console.log("There is already a seller, you cant enter");
