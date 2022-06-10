@@ -91,8 +91,7 @@ WA.onInit()
 
     // BuyingZone
     WA.room.onEnterLayer("buyingZone").subscribe(async () => {
-      console.log("buying zone");
-      iframeRight = await WA.nav.openCoWebSite("https://www.wikipedia.org/");
+      iframeRight = await WA.nav.openCoWebSite("http://localhost:8000/index.html?userToken=" + WA.player.userRoomToken + "&zone=buyingZone");
       const triggerMessage = WA.ui.displayActionMessage({
         message: "Wanna be a buyer ?press 'space' to confirm",
         callback: () => {
@@ -103,20 +102,6 @@ WA.onInit()
         // later
         triggerMessage.remove();
       }, 10000);
-      // Object Sell Appear
-      objectSell = await WA.ui.website.open({
-        url: "https://wikipedia.org/",
-        position: {
-          vertical: "bottom",
-          horizontal: "left",
-        },
-        size: {
-          height: "300px",
-          width: "200px",
-        },
-      });
-
-      objectSell.position.vertical = "top";
     });
     WA.room.onLeaveLayer("buyingZone").subscribe(() => {
       console.log("leaving buying zone");
