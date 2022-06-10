@@ -1,10 +1,8 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { CoWebsite } from "@workadventure/iframe-api-typings/Api/iframe/nav";
-import { UIWebsite } from "@workadventure/iframe-api-typings/Api/iframe/Ui/UIWebsite";
 
 console.log("Script started successfully");
-let objectSell: UIWebsite;
 let iframeRight: CoWebsite;
 // Waiting for the API to be ready
 WA.onInit()
@@ -91,11 +89,18 @@ WA.onInit()
 
     // BuyingZone
     WA.room.onEnterLayer("buyingZone").subscribe(async () => {
-      iframeRight = await WA.nav.openCoWebSite("http://localhost:8000/index.html?userToken=" + WA.player.userRoomToken + "&zone=buyingZone");
+      iframeRight = await WA.nav.openCoWebSite(
+        "http://localhost:8000/index.html?userToken=" +
+          WA.player.userRoomToken +
+          "&zone=buyingZone"
+      );
       const triggerMessage = WA.ui.displayActionMessage({
         message: "Wanna be a buyer ?press 'space' to confirm",
         callback: () => {
-          WA.chat.sendChatMessage("confirmed", "trigger message logic");
+          WA.chat.sendChatMessage(
+            "confirmed",
+            "Take a sit as buyer and follow"
+          );
         },
       });
       setTimeout(() => {
@@ -105,7 +110,6 @@ WA.onInit()
     });
     WA.room.onLeaveLayer("buyingZone").subscribe(() => {
       console.log("leaving buying zone");
-      objectSell.close();
       iframeRight.close();
     });
   })
